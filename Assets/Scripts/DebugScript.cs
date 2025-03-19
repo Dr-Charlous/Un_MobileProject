@@ -15,18 +15,22 @@ public class DebugScript : MonoBehaviour
     Vector3 _targetInitialPos;
     Vector3 _targetPos;
     float _deltaTime = 0;
+    float _timer = 0;
 
     private void Start()
     {
         _targetPos = _obj.position;
+        DebugText($"Nothing", 0);
+        DebugText("X", 2);
     }
 
     private void Update()
     {
         HandleInput();
 
+        _timer += Time.deltaTime;
         float distance = ((_targetInitialPos + _targetPos) - _obj.position).magnitude;
-        DebugText($"{Mathf.Round(distance * 100) / 100}", 1);
+        DebugText($"Lerp : {Mathf.Round(distance * 100) / 100}\n{_timer}", 1);
 
         _obj.position = Vector3.Lerp(_obj.position, _targetInitialPos + _targetPos, _lerpSpeed);
     }
@@ -79,9 +83,13 @@ public class DebugScript : MonoBehaviour
             DebugText($"Mouse release\n{_initialePos}\n{_endPos}", 0);
 
             MoveTargetSet();
+            DebugText("X", 2);
         }
 #else
-        _touch = Input.GetTouch(0);
+        if (Input.touchCount == 0)
+            return;
+
+            _touch = Input.GetTouch(0);
 
         if (_touch.phase == TouchPhase.Began)
         {
