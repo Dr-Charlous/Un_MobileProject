@@ -1,3 +1,4 @@
+using System.Threading;
 using TMPro;
 using UnityEngine;
 
@@ -27,10 +28,7 @@ public class DebugScript : MonoBehaviour
     private void Update()
     {
         HandleInput();
-
-        _timer += Time.deltaTime;
-        float distance = ((_targetInitialPos + _targetPos) - _obj.position).magnitude;
-        DebugText($"Lerp : {Mathf.Round(distance * 100) / 100}\n{_timer}", 1);
+        TimerDisplay();
 
         _obj.position = Vector3.Lerp(_obj.position, _targetInitialPos + _targetPos, _lerpSpeed);
     }
@@ -52,7 +50,7 @@ public class DebugScript : MonoBehaviour
 
             if (direction != Vector2.zero && direction.magnitude >= _distanceInput)
             {
-                direction = (Vector3)direction.normalized;
+                direction = GetDirection(direction);
 
                 _targetInitialPos = _obj.position;
                 _targetPos = new Vector3(direction.x, _obj.position.y, direction.y) * _distanceMove;
@@ -63,6 +61,18 @@ public class DebugScript : MonoBehaviour
         }
     }
 
+    Vector2 GetDirection(Vector2 direction)
+    {
+        direction = direction.normalized;
+
+        if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+            direction = new Vector2(direction.x, 0).normalized;
+        else
+            direction = new Vector2(0, direction.y).normalized;
+
+        return direction;
+    }
+
     void HandleInput()
     {
 #if UNITY_EDITOR
@@ -70,6 +80,7 @@ public class DebugScript : MonoBehaviour
         {
             if (_initialePos == null)
             {
+                _obj.position = _targetInitialPos + _targetPos;
                 _initialePos = Input.mousePosition;
                 DebugText($"Mouse clic\n{_initialePos}", 0);
             }
@@ -95,6 +106,7 @@ public class DebugScript : MonoBehaviour
         {
             if (_initialePos == null)
             {
+                _obj.position = _targetInitialPos + _targetPos;
                 _initialePos = _touch.position;
                 DebugText($"Touch clic\n{_initialePos}", 0);
             }
@@ -111,6 +123,15 @@ public class DebugScript : MonoBehaviour
             DebugText("X", 2);
         }
 #endif
+    }
+
+    void TimerDisplay()
+    {
+        _timer += Time.deltaTime;
+
+        float distance = ((_targetInitialPos + _targetPos) - _obj.position).magnitude;
+
+        DebugText($"Lerp : {Mathf.Round(distance * 100) / 100}\n{Mathf.Round(_timer*10)/10}", 1);
     }
 
     void DebugText(string txt, int value)
