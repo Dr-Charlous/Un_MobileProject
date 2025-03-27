@@ -104,7 +104,7 @@ public class SceneLoader : MonoBehaviour
             for (int x = 0; x < Size.x; x++)
             {
                 PrefabJspQuoi pref = Instantiate(PrefabObjTest, new Vector3(x, 0, y), Quaternion.identity).GetComponent<PrefabJspQuoi>();
-                var mapData = grid[x, y];
+                var mapData = grid[x, Size.y - y - 1];
 
                 //Debug.Log($"{x}:{y} = {mapData}");
 
