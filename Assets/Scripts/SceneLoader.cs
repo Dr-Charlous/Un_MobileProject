@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class SceneLoader : MonoBehaviour
 {
@@ -9,25 +10,26 @@ public class SceneLoader : MonoBehaviour
         Character
     }
 
+    public string[,] DataGrid { get; private set; }
+    public GameObject PrefabObjTest;
 
     [SerializeField] TextAsset LD;
     [SerializeField] Repairtory[] Keys;
 
     Vector2Int Size = Vector2Int.zero;
-    string[,] DataGrid;
     string[] _lines;
 
     private void Start()
     {
-        CreateGridFromText(LD);
+        DataGrid = CreateGridFromText(LD);
         FillGrid(DataGrid);
         DisplayGridDebug(DataGrid);
     }
 
-    void CreateGridFromText(TextAsset ld)
+    string[,] CreateGridFromText(TextAsset ld)
     {
         if (ld == null)
-            return;
+            return null;
 
         _lines = ld.text.Split("\n");
 
@@ -44,7 +46,7 @@ public class SceneLoader : MonoBehaviour
         }
 
         //Grid Initialize Length
-        DataGrid = new string[Size.x, Size.y];
+        return new string[Size.x, Size.y];
     }
 
     void FillGrid(string[,] grid)
@@ -60,31 +62,35 @@ public class SceneLoader : MonoBehaviour
                     if (lineDetail[j] == item.Characters)
                     {
                         if (item.Category == Categories.Wall)
+                        {
                             DataGrid[j, i] = "Wall";
 
+                            if (item.IsUp)
+                                DataGrid[j, i] += " Up";
+
+                            if (item.IsDown)
+                                DataGrid[j, i] += " Down";
+
+                            if (item.IsRight)
+                                DataGrid[j, i] += " Right";
+
+                            if (item.IsLeft)
+                                DataGrid[j, i] += " Left";
+                        }
+
                         if (item.Category == Categories.Character)
+                        {
                             DataGrid[j, i] = "Character";
 
-                        if (item.IsUp)
-                            DataGrid[j, i] += " Up";
+                            if (item.IsPNJ)
+                                DataGrid[j, i] += " PNJ";
 
-                        if (item.IsDown)
-                            DataGrid[j, i] += " Down";
+                            if (item.IsEnnemy)
+                                DataGrid[j, i] += " Ennemy";
 
-                        if (item.IsRight)
-                            DataGrid[j, i] += " Right";
-
-                        if (item.IsLeft)
-                            DataGrid[j, i] += " Left";
-
-                        if (item.IsPNJ)
-                            DataGrid[j, i] += " PNJ";
-
-                        if (item.IsEnnemy)
-                            DataGrid[j, i] += " Ennemy";
-
-                        if (item.IsPlayer)
-                            DataGrid[j, i] += " Player";
+                            if (item.IsPlayer)
+                                DataGrid[j, i] += " Player";
+                        }
                     }
                 }
             }
@@ -93,18 +99,52 @@ public class SceneLoader : MonoBehaviour
 
     void DisplayGridDebug(string[,] grid)
     {
-        string sentence = "";
-
-        for (int i = 0; i < Size.y; i++)
+        for (int y = 0; y < Size.y; y++)
         {
-            for (int j = 0; j < Size.x; j++)
+            for (int x = 0; x < Size.x; x++)
             {
-                sentence += DataGrid[j, i] + "||";
-            }
-            sentence += "\n";
-        }
+                PrefabJspQuoi pref = Instantiate(PrefabObjTest, new Vector3(x, 0, y), Quaternion.identity).GetComponent<PrefabJspQuoi>();
+                var mapData = grid[x, y];
 
-        Debug.Log(sentence);
+                //Debug.Log($"{x}:{y} = {mapData}");
+
+                if (mapData != null)
+                {
+                    string[] line = mapData.Split(' ');
+                    int value = 0;
+
+                    for (int k = 0; k < line.Length; k++)
+                    {
+                        if (line[k] == "Up")
+                        {
+                            pref.PrefabFront.SetActive(true);
+                            value++;
+                        }
+                        if (line[k] == "Down")
+                        {
+                            pref.PrefabBack.SetActive(true);
+                            value++;
+                        }
+                        if (line[k] == "Right")
+                        {
+                            pref.PrefabRight.SetActive(true);
+                            value++;
+                        }
+                        if (line[k] == "Left")
+                        {
+                            pref.PrefabLeft.SetActive(true);
+                            value++;
+                        }
+
+                        if (value >= 4)
+                            pref.PrefabBloc.SetActive(true);
+
+                        if (line[k] == "Character")
+                            pref.PrefabCenter.SetActive(true);
+                    }
+                }
+            }
+        }
     }
 }
 
