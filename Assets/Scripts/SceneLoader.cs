@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public class SceneLoader : MonoBehaviour
 {
@@ -12,9 +11,11 @@ public class SceneLoader : MonoBehaviour
 
     public string[,] DataGrid { get; private set; }
     public GameObject PrefabObjTest;
+    public GameObject Player;
 
     [SerializeField] TextAsset LD;
     [SerializeField] Repairtory[] Keys;
+    [SerializeField] Vector2Int _playerPos;
 
     Vector2Int Size = Vector2Int.zero;
     string[] _lines;
@@ -24,6 +25,9 @@ public class SceneLoader : MonoBehaviour
         DataGrid = CreateGridFromText(LD);
         FillGrid(DataGrid);
         DisplayGridDebug(DataGrid);
+
+        Player.transform.position = new Vector3(_playerPos.x, Player.transform.position.y, _playerPos.y);
+        Player.SetActive(true);
     }
 
     string[,] CreateGridFromText(TextAsset ld)
@@ -61,8 +65,10 @@ public class SceneLoader : MonoBehaviour
                 {
                     if (lineDetail[j] == item.Characters)
                     {
+                        DataGrid[j, i] = "";
+
                         if (item.Category == Categories.Wall)
-                            DataGrid[j, i] = "Wall";
+                            DataGrid[j, i] += "Wall";
 
                         if (item.IsUp)
                             DataGrid[j, i] += " Up";
@@ -99,7 +105,7 @@ public class SceneLoader : MonoBehaviour
         {
             for (int x = 0; x < Size.x; x++)
             {
-                PrefabJspQuoi pref = Instantiate(PrefabObjTest, new Vector3(x, 0, y), Quaternion.identity).GetComponent<PrefabJspQuoi>();
+                PrefabJspQuoi pref = Instantiate(PrefabObjTest, new Vector3(x, 0, y), Quaternion.identity, transform).GetComponent<PrefabJspQuoi>();
                 var mapData = grid[x, Size.y - y - 1];
 
                 //Debug.Log($"{x}:{y} = {mapData}");
@@ -132,14 +138,13 @@ public class SceneLoader : MonoBehaviour
                             value++;
                         }
 
-                        if (line[k] == "Character" 
+                        if (line[k] == "Character"
                             || line[k] == "PNJ"
-                            || line[k] == "Ennemy"
-                            || line[k] == "Player")
-                        {
+                            || line[k] == "Ennemy")
                             pref.PrefabCenter.SetActive(true);
-                            Debug.Log(mapData);
-                        }
+
+                        if (line[k] == "Player")
+                            _playerPos = new Vector2Int(x, Size.y - y - 1);
 
                         if (value >= 4)
                         {
@@ -155,6 +160,28 @@ public class SceneLoader : MonoBehaviour
                 }
             }
         }
+    }
+
+    public bool GetPosDirection(Vector2Int moveDirection)
+    {
+        string line = DataGrid[_playerPos.x + moveDirection.x, Size.y - _playerPos.y + moveDirection.y];
+        Debug.Log($"{ line} / {moveDirection} ");
+        string[] lines = line.Split(' ');
+        bool value = true;
+
+        for (int i = 0; i < lines.Length; i++)
+        {
+            if (lines[i] == "Down" && moveDirection.y <= -1)
+                value = false;
+            if (lines[i] == "Up" && moveDirection.y >= 1)
+                value = false;
+            if (lines[i] == "Right" && moveDirection.x <= -1)
+                value = false;
+            if (lines[i] == "Left" && moveDirection.x >= 1)
+                value = false;
+        }
+
+        return value;
     }
 }
 

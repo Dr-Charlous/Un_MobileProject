@@ -44,7 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cad26c9c1ec4fdb478509e7bee41bed7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LD: {fileID: 4900000, guid: 81f2de0a0ae86bb44864ea51679efb26, type: 3}
+  PrefabObjTest: {fileID: 6549562571277799895, guid: 3c0f8832e2be87248a606142a5d5146f, type: 3}
+  Player: {fileID: 0}
+  LD: {fileID: 4900000, guid: f50b45e011c6a3348b01f2223515b49b, type: 3}
   Keys:
   - Characters: 00
     Category: 0
@@ -56,11 +58,318 @@ MonoBehaviour:
     IsEnnemy: 0
     IsPlayer: 0
   - Characters: 01
-    Category: 1
+    Category: 0
     IsUp: 0
     IsDown: 0
     IsRight: 0
     IsLeft: 0
     IsPNJ: 0
     IsEnnemy: 0
+    IsPlayer: 0
+  - Characters: 02
+    Category: 0
+    IsUp: 1
+    IsDown: 0
+    IsRight: 0
+    IsLeft: 0
+    IsPNJ: 0
+    IsEnnemy: 0
+    IsPlayer: 0
+  - Characters: 03
+    Category: 0
+    IsUp: 0
+    IsDown: 0
+    IsRight: 1
+    IsLeft: 0
+    IsPNJ: 0
+    IsEnnemy: 0
+    IsPlayer: 0
+  - Characters: 04
+    Category: 0
+    IsUp: 0
+    IsDown: 1
+    IsRight: 0
+    IsLeft: 0
+    IsPNJ: 0
+    IsEnnemy: 0
+    IsPlayer: 0
+  - Characters: 05
+    Category: 0
+    IsUp: 0
+    IsDown: 0
+    IsRight: 0
+    IsLeft: 1
+    IsPNJ: 0
+    IsEnnemy: 0
+    IsPlayer: 0
+  - Characters: 06
+    Category: 0
+    IsUp: 1
+    IsDown: 0
+    IsRight: 1
+    IsLeft: 0
+    IsPNJ: 0
+    IsEnnemy: 0
+    IsPlayer: 0
+  - Characters: 07
+    Category: 0
+    IsUp: 0
+    IsDown: 1
+    IsRight: 1
+    IsLeft: 0
+    IsPNJ: 0
+    IsEnnemy: 0
+    IsPlayer: 0
+  - Characters: 08
+    Category: 0
+    IsUp: 0
+    IsDown: 1
+    IsRight: 0
+    IsLeft: 1
+    IsPNJ: 0
+    IsEnnemy: 0
+    IsPlayer: 0
+  - Characters: 09
+    Category: 0
+    IsUp: 1
+    IsDown: 0
+    IsRight: 0
+    IsLeft: 1
+    IsPNJ: 0
+    IsEnnemy: 0
+    IsPlayer: 0
+  - Characters: 10
+    Category: 0
+    IsUp: 1
+    IsDown: 1
+    IsRight: 0
+    IsLeft: 1
+    IsPNJ: 0
+    IsEnnemy: 0
+    IsPlayer: 0
+  - Characters: 11
+    Category: 0
+    IsUp: 1
+    IsDown: 1
+    IsRight: 1
+    IsLeft: 0
+    IsPNJ: 0
+    IsEnnemy: 0
+    IsPlayer: 0
+  - Characters: 12
+    Category: 0
+    IsUp: 1
+    IsDown: 1
+    IsRight: 0
+    IsLeft: 0
+    IsPNJ: 0
+    IsEnnemy: 0
+    IsPlayer: 0
+  - Characters: 13
+    Category: 0
+    IsUp: 0
+    IsDown: 0
+    IsRight: 1
+    IsLeft: 1
+    IsPNJ: 0
+    IsEnnemy: 0
+    IsPlayer: 0
+  - Characters: 14
+    Category: 0
+    IsUp: 1
+    IsDown: 0
+    IsRight: 1
+    IsLeft: 1
+    IsPNJ: 0
+    IsEnnemy: 0
+    IsPlayer: 0
+  - Characters: 15
+    Category: 0
+    IsUp: 0
+    IsDown: 1
+    IsRight: 1
+    IsLeft: 1
+    IsPNJ: 0
+    IsEnnemy: 0
+    IsPlayer: 0
+  - Characters: J1
+    Category: 1
+    IsUp: 0
+    IsDown: 0
+    IsRight: 0
+    IsLeft: 0
+    IsPNJ: 1
+    IsEnnemy: 0
+    IsPlayer: 0
+  - Characters: J2
+    Category: 1
+    IsUp: 1
+    IsDown: 0
+    IsRight: 0
+    IsLeft: 0
+    IsPNJ: 1
+    IsEnnemy: 0
+    IsPlayer: 0
+  - Characters: J3
+    Category: 1
+    IsUp: 0
+    IsDown: 0
+    IsRight: 1
+    IsLeft: 0
+    IsPNJ: 1
+    IsEnnemy: 0
+    IsPlayer: 0
+  - Characters: J4
+    Category: 1
+    IsUp: 0
+    IsDown: 1
+    IsRight: 0
+    IsLeft: 0
+    IsPNJ: 1
+    IsEnnemy: 0
+    IsPlayer: 0
+  - Characters: J5
+    Category: 1
+    IsUp: 0
+    IsDown: 0
+    IsRight: 0
+    IsLeft: 1
+    IsPNJ: 1
+    IsEnnemy: 0
+    IsPlayer: 0
+  - Characters: J6
+    Category: 1
+    IsUp: 1
+    IsDown: 0
+    IsRight: 1
+    IsLeft: 0
+    IsPNJ: 1
+    IsEnnemy: 0
+    IsPlayer: 0
+  - Characters: J7
+    Category: 1
+    IsUp: 0
+    IsDown: 1
+    IsRight: 1
+    IsLeft: 0
+    IsPNJ: 1
+    IsEnnemy: 0
+    IsPlayer: 0
+  - Characters: J8
+    Category: 1
+    IsUp: 0
+    IsDown: 1
+    IsRight: 0
+    IsLeft: 1
+    IsPNJ: 1
+    IsEnnemy: 0
+    IsPlayer: 0
+  - Characters: J9
+    Category: 1
+    IsUp: 1
+    IsDown: 0
+    IsRight: 0
+    IsLeft: 1
+    IsPNJ: 1
+    IsEnnemy: 0
+    IsPlayer: 0
+  - Characters: J10
+    Category: 1
+    IsUp: 1
+    IsDown: 1
+    IsRight: 0
+    IsLeft: 1
+    IsPNJ: 1
+    IsEnnemy: 0
+    IsPlayer: 0
+  - Characters: J11
+    Category: 1
+    IsUp: 1
+    IsDown: 1
+    IsRight: 1
+    IsLeft: 0
+    IsPNJ: 1
+    IsEnnemy: 0
+    IsPlayer: 0
+  - Characters: J12
+    Category: 1
+    IsUp: 1
+    IsDown: 1
+    IsRight: 0
+    IsLeft: 0
+    IsPNJ: 1
+    IsEnnemy: 0
+    IsPlayer: 0
+  - Characters: J13
+    Category: 1
+    IsUp: 0
+    IsDown: 0
+    IsRight: 1
+    IsLeft: 1
+    IsPNJ: 1
+    IsEnnemy: 0
+    IsPlayer: 0
+  - Characters: J14
+    Category: 1
+    IsUp: 1
+    IsDown: 0
+    IsRight: 1
+    IsLeft: 1
+    IsPNJ: 1
+    IsEnnemy: 0
+    IsPlayer: 0
+  - Characters: J15
+    Category: 1
+    IsUp: 0
+    IsDown: 1
+    IsRight: 1
+    IsLeft: 1
+    IsPNJ: 1
+    IsEnnemy: 0
+    IsPlayer: 0
+  - Characters: E1
+    Category: 1
+    IsUp: 0
+    IsDown: 0
+    IsRight: 0
+    IsLeft: 0
+    IsPNJ: 0
+    IsEnnemy: 1
+    IsPlayer: 0
+  - Characters: E4
+    Category: 1
+    IsUp: 0
+    IsDown: 1
+    IsRight: 0
+    IsLeft: 0
+    IsPNJ: 0
+    IsEnnemy: 1
+    IsPlayer: 0
+  - Characters: E6
+    Category: 1
+    IsUp: 1
+    IsDown: 0
+    IsRight: 1
+    IsLeft: 0
+    IsPNJ: 0
+    IsEnnemy: 1
+    IsPlayer: 0
+  - Characters: E9
+    Category: 1
+    IsUp: 1
+    IsDown: 0
+    IsRight: 0
+    IsLeft: 1
+    IsPNJ: 0
+    IsEnnemy: 1
+    IsPlayer: 0
+  - Characters: 0P
+    Category: 1
+    IsUp: 1
+    IsDown: 0
+    IsRight: 0
+    IsLeft: 0
+    IsPNJ: 0
+    IsEnnemy: 0
     IsPlayer: 1
+  _playerPos: {x: 0, y: 0}

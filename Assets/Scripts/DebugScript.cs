@@ -1,9 +1,9 @@
-using System.Threading;
 using TMPro;
 using UnityEngine;
 
 public class DebugScript : MonoBehaviour
 {
+    [SerializeField] SceneLoader _sceneLoad;
     [SerializeField] TextMeshProUGUI[] _textUi;
     [SerializeField] Transform _obj;
     [SerializeField] float _distanceInput = 1;
@@ -20,7 +20,7 @@ public class DebugScript : MonoBehaviour
 
     private void Start()
     {
-        _targetPos = _obj.position;
+        _targetInitialPos = _obj.position;
         DebugText($"Nothing", 0);
         DebugText("X", 2);
     }
@@ -50,10 +50,13 @@ public class DebugScript : MonoBehaviour
 
             if (direction != Vector2.zero && direction.magnitude >= _distanceInput)
             {
-                direction = GetDirection(direction);
+                Vector2Int intDirection = GetDirection(direction);
 
-                _targetInitialPos = _obj.position;
-                _targetPos = new Vector3(direction.x, _obj.position.y, direction.y) * _distanceMove;
+                if (_sceneLoad.GetPosDirection(intDirection))
+                {
+                    _targetInitialPos = _obj.position;
+                    _targetPos = new Vector3(intDirection.x, _obj.position.y, intDirection.y) * _distanceMove;
+                }
 
                 _initialePos = null;
                 _endPos = null;
@@ -61,16 +64,16 @@ public class DebugScript : MonoBehaviour
         }
     }
 
-    Vector2 GetDirection(Vector2 direction)
+    Vector2Int GetDirection(Vector2 direction)
     {
-        direction = direction.normalized;
+        direction = direction.normalized;;
 
         if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
             direction = new Vector2(direction.x, 0).normalized;
         else
             direction = new Vector2(0, direction.y).normalized;
 
-        return direction;
+        return new Vector2Int((int)direction.x, (int)direction.y);
     }
 
     void HandleInput()
@@ -131,7 +134,7 @@ public class DebugScript : MonoBehaviour
 
         float distance = ((_targetInitialPos + _targetPos) - _obj.position).magnitude;
 
-        DebugText($"Lerp : {Mathf.Round(distance * 100) / 100}\n{Mathf.Round(_timer*10)/10}", 1);
+        DebugText($"Lerp : {Mathf.Round(distance * 100) / 100}\n{Mathf.Round(_timer * 10) / 10}", 1);
     }
 
     void DebugText(string txt, int value)
