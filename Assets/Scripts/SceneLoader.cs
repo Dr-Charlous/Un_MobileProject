@@ -62,35 +62,31 @@ public class SceneLoader : MonoBehaviour
                     if (lineDetail[j] == item.Characters)
                     {
                         if (item.Category == Categories.Wall)
-                        {
                             DataGrid[j, i] = "Wall";
 
-                            if (item.IsUp)
-                                DataGrid[j, i] += " Up";
+                        if (item.IsUp)
+                            DataGrid[j, i] += " Up";
 
-                            if (item.IsDown)
-                                DataGrid[j, i] += " Down";
+                        if (item.IsDown)
+                            DataGrid[j, i] += " Down";
 
-                            if (item.IsRight)
-                                DataGrid[j, i] += " Right";
+                        if (item.IsRight)
+                            DataGrid[j, i] += " Right";
 
-                            if (item.IsLeft)
-                                DataGrid[j, i] += " Left";
-                        }
+                        if (item.IsLeft)
+                            DataGrid[j, i] += " Left";
 
                         if (item.Category == Categories.Character)
-                        {
-                            DataGrid[j, i] = "Character";
+                            DataGrid[j, i] += " Character";
 
-                            if (item.IsPNJ)
-                                DataGrid[j, i] += " PNJ";
+                        if (item.IsPNJ)
+                            DataGrid[j, i] += " PNJ";
 
-                            if (item.IsEnnemy)
-                                DataGrid[j, i] += " Ennemy";
+                        if (item.IsEnnemy)
+                            DataGrid[j, i] += " Ennemy";
 
-                            if (item.IsPlayer)
-                                DataGrid[j, i] += " Player";
-                        }
+                        if (item.IsPlayer)
+                            DataGrid[j, i] += " Player";
                     }
                 }
             }
@@ -136,11 +132,25 @@ public class SceneLoader : MonoBehaviour
                             value++;
                         }
 
+                        if (line[k] == "Character" 
+                            || line[k] == "PNJ"
+                            || line[k] == "Ennemy"
+                            || line[k] == "Player")
+                        {
+                            pref.PrefabCenter.SetActive(true);
+                            Debug.Log(mapData);
+                        }
+
                         if (value >= 4)
+                        {
                             pref.PrefabBloc.SetActive(true);
 
-                        if (line[k] == "Character")
-                            pref.PrefabCenter.SetActive(true);
+                            pref.PrefabFront.SetActive(false);
+                            pref.PrefabBack.SetActive(false);
+                            pref.PrefabRight.SetActive(false);
+                            pref.PrefabLeft.SetActive(false);
+                            pref.PrefabCenter.SetActive(false);
+                        }
                     }
                 }
             }
