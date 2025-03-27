@@ -14240,6 +14240,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5777282695636406250, guid: d3cb738d1ca3dd645a8a76ba107f2c04, type: 3}
+      propertyPath: Keys.Array.data[1].IsPlayer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5777282695636406250, guid: d3cb738d1ca3dd645a8a76ba107f2c04, type: 3}
       propertyPath: Keys.Array.data[20].IsRight
       value: 0
       objectReference: {fileID: 0}
