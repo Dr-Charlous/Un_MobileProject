@@ -14,7 +14,7 @@ public class SceneLoader : MonoBehaviour
     public GameObject Player;
 
     [SerializeField] TextAsset LD;
-    [SerializeField] Repairtory[] Keys;
+    [SerializeField] Directory[] Keys;
     [SerializeField] Vector2Int _playerPos;
 
     Vector2Int Size = Vector2Int.zero;
@@ -164,8 +164,8 @@ public class SceneLoader : MonoBehaviour
 
     public bool GetPosDirection(Vector2Int moveDirection)
     {
-        string line = DataGrid[_playerPos.x + moveDirection.x, Size.y - _playerPos.y + moveDirection.y];
-        Debug.Log($"{ line} / {moveDirection} ");
+        string line = DataGrid[_playerPos.x, Size.y - _playerPos.y - 1];
+        Debug.Log($"{line} / {moveDirection}\n{_playerPos}");
         string[] lines = line.Split(' ');
         bool value = true;
 
@@ -175,18 +175,21 @@ public class SceneLoader : MonoBehaviour
                 value = false;
             if (lines[i] == "Up" && moveDirection.y >= 1)
                 value = false;
-            if (lines[i] == "Right" && moveDirection.x <= -1)
+            if (lines[i] == "Right" && moveDirection.x >= 1)
                 value = false;
-            if (lines[i] == "Left" && moveDirection.x >= 1)
+            if (lines[i] == "Left" && moveDirection.x <= -1)
                 value = false;
         }
+
+        if (value)
+            _playerPos += new Vector2Int(moveDirection.x, moveDirection.y);
 
         return value;
     }
 }
 
 [Serializable]
-public class Repairtory
+public class Directory
 {
     public string Characters;
     public SceneLoader.Categories Category;
