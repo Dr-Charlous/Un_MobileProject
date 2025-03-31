@@ -324,6 +324,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4491645508018313217, guid: dbe6a212b85e2f44ea611b59d7d6dbae, type: 3}
   m_PrefabInstance: {fileID: 3008431952256382563}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &1192471072 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7285185646045350196, guid: dbe6a212b85e2f44ea611b59d7d6dbae, type: 3}
+  m_PrefabInstance: {fileID: 3008431952256382563}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1023856835078361311
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -340,6 +345,14 @@ PrefabInstance:
       propertyPath: Player
       value: 
       objectReference: {fileID: 1192471071}
+    - target: {fileID: 5777282695636406250, guid: d3cb738d1ca3dd645a8a76ba107f2c04, type: 3}
+      propertyPath: PnjPrefab
+      value: 
+      objectReference: {fileID: 4166288462603289130, guid: f1dd9d321b6380b4abc11d43f7e7b1bf, type: 3}
+    - target: {fileID: 5777282695636406250, guid: d3cb738d1ca3dd645a8a76ba107f2c04, type: 3}
+      propertyPath: VigilPrefab
+      value: 
+      objectReference: {fileID: 4166288462603289130, guid: f1dd9d321b6380b4abc11d43f7e7b1bf, type: 3}
     - target: {fileID: 5820280554088009212, guid: d3cb738d1ca3dd645a8a76ba107f2c04, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -437,13 +450,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4491645508018313217, guid: dbe6a212b85e2f44ea611b59d7d6dbae, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
+    - target: {fileID: 4343567525120236112, guid: dbe6a212b85e2f44ea611b59d7d6dbae, type: 3}
+      propertyPath: Obj
+      value: 
+      objectReference: {fileID: 1192471072}
+    - target: {fileID: 4343567525120236112, guid: dbe6a212b85e2f44ea611b59d7d6dbae, type: 3}
+      propertyPath: _sceneLoad
+      value: 
+      objectReference: {fileID: 575102243}
     - target: {fileID: 4854285785982132265, guid: dbe6a212b85e2f44ea611b59d7d6dbae, type: 3}
       propertyPath: m_Name
       value: TestChara
+      objectReference: {fileID: 0}
+    - target: {fileID: 5127192533298644168, guid: dbe6a212b85e2f44ea611b59d7d6dbae, type: 3}
+      propertyPath: m_Name
+      value: MeshAntoine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

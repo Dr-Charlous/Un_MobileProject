@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 public class SceneLoader : MonoBehaviour
 {
@@ -11,8 +12,11 @@ public class SceneLoader : MonoBehaviour
 
     public string[,] DataGrid { get; private set; }
     public GameObject PrefabObjTest;
+    public GameObject PnjPrefab;
+    public GameObject VigilPrefab;
     public GameObject Player;
 
+    [SerializeField] Slap _slap;
     [SerializeField] TextAsset LD;
     [SerializeField] Directory[] Keys;
     [SerializeField] Vector2Int _playerPos;
@@ -86,13 +90,22 @@ public class SceneLoader : MonoBehaviour
                             DataGrid[j, i] += " Character";
 
                         if (item.IsPNJ)
+                        {
                             DataGrid[j, i] += " PNJ";
+                            Instantiate(PnjPrefab, new Vector3(j, 0, Size.y - i - 1), Quaternion.identity);
+                        }
 
                         if (item.IsEnnemy)
+                        {
                             DataGrid[j, i] += " Ennemy";
+                            Instantiate(VigilPrefab, new Vector3(j, 0, Size.y - i - 1), Quaternion.identity);
+                        }
 
                         if (item.IsPlayer)
+                        {
                             DataGrid[j, i] += " Player";
+                            _playerPos = new Vector2Int(j, Size.y - i - 1);
+                        }
                     }
                 }
             }
@@ -138,13 +151,11 @@ public class SceneLoader : MonoBehaviour
                             value++;
                         }
 
-                        if (line[k] == "Character"
-                            || line[k] == "PNJ"
-                            || line[k] == "Ennemy")
-                            pref.PrefabCenter.SetActive(true);
+                        //if (line[k] == "Character" || line[k] == "PNJ" || line[k] == "Ennemy")
+                        //    pref.PrefabCenter.SetActive(true);
 
-                        if (line[k] == "Player")
-                            _playerPos = new Vector2Int(x, Size.y - y - 1);
+                        //if (line[k] == "Player")
+                        //    _playerPos = new Vector2Int(x, Size.y - y - 1);
 
                         if (value >= 4)
                         {
@@ -165,7 +176,7 @@ public class SceneLoader : MonoBehaviour
     public bool GetPosDirection(Vector2Int moveDirection)
     {
         string line = DataGrid[_playerPos.x, Size.y - _playerPos.y - 1];
-        Debug.Log($"{line} / {moveDirection}\n{_playerPos}");
+        //Debug.Log($"{line} / {moveDirection}\n{_playerPos}");
         string[] lines = line.Split(' ');
         bool value = true;
 
@@ -181,10 +192,24 @@ public class SceneLoader : MonoBehaviour
                 value = false;
         }
 
-        if (value)
-            _playerPos += new Vector2Int(moveDirection.x, moveDirection.y);
-
         return value;
+    }
+
+    public bool IsPnjThere(Vector2Int moveDirection)
+    {
+        string line = DataGrid[_playerPos.x, Size.y - _playerPos.y - 1];
+        string[] lines = line.Split(' ');
+
+        for (int i = 0; i < lines.Length; i++)
+        {
+            if (lines[i] == "PNJ")
+                _slap.SwitchUi();
+        }
+
+        if (GetPosDirection(moveDirection))
+            return true;
+        else
+            return false;
     }
 }
 
