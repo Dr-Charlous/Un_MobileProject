@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4166288462603289130}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
@@ -81,6 +81,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -4396642182433536433, guid: 95fec00a37334404c8c9d72577235086, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 484fc4ac91178b04abd6a1bd5a9f0f6c, type: 2}
     - target: {fileID: 919132149155446097, guid: 95fec00a37334404c8c9d72577235086, type: 3}
       propertyPath: m_Name
       value: SK_Character_Base
@@ -143,6 +147,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 882cfe682e1a31340a35e856db7c9dc7, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 484fc4ac91178b04abd6a1bd5a9f0f6c, type: 2}
     - target: {fileID: 919132149155446097, guid: 882cfe682e1a31340a35e856db7c9dc7, type: 3}
       propertyPath: m_Name
       value: SM_Antoine_Hair

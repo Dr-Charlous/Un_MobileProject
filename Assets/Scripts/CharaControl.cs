@@ -11,6 +11,7 @@ public class CharaControl : MonoBehaviour
 
     [SerializeField] DebugScript _debug;
     [SerializeField] SceneLoader _sceneLoad;
+    [SerializeField] Slap _slap;
     [SerializeField] float _distanceInput = 1;
     [SerializeField] float _distanceMove = 1;
     [SerializeField][Range(0f, 1f)] float _lerpSpeed = 0.5f;
@@ -48,12 +49,14 @@ public class CharaControl : MonoBehaviour
                 {
                     TargetInitialPos = Obj.position;
                     TargetPos = new Vector3(intDirection.x, Obj.position.y, intDirection.y) * _distanceMove;
+
+                    _sceneLoad.PlayerPos += intDirection;
                 }
 
                 //Slap
                 if (_sceneLoad.IsPnjThere(intDirection) && !CanMove)
                 {
-                    //Slap fonction
+                    _slap.SlapAction();
                 }
 
                 _initialePos = null;

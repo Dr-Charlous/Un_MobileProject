@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
 
@@ -15,22 +16,24 @@ public class SceneLoader : MonoBehaviour
     public GameObject PnjPrefab;
     public GameObject VigilPrefab;
     public GameObject Player;
+    public Vector2Int PlayerPos;
 
     [SerializeField] Slap _slap;
-    [SerializeField] TextAsset LD;
-    [SerializeField] Directory[] Keys;
-    [SerializeField] Vector2Int _playerPos;
+    [SerializeField] TextAsset _ld;
+    [SerializeField] Directory[] _keys;
+    [SerializeField] Dictionary<string, GameObject> _characters = new();
+    [SerializeField] Dictionary<string, GameObject> _ennemies = new();
 
-    Vector2Int Size = Vector2Int.zero;
+    Vector2Int _size = Vector2Int.zero;
     string[] _lines;
 
     private void Start()
     {
-        DataGrid = CreateGridFromText(LD);
+        DataGrid = CreateGridFromText(_ld);
         FillGrid(DataGrid);
         DisplayGridDebug(DataGrid);
 
-        Player.transform.position = new Vector3(_playerPos.x, Player.transform.position.y, _playerPos.y);
+        Player.transform.position = new Vector3(PlayerPos.x, Player.transform.position.y, PlayerPos.y);
         Player.SetActive(true);
     }
 
@@ -41,31 +44,31 @@ public class SceneLoader : MonoBehaviour
 
         _lines = ld.text.Split("\n");
 
-        //Size Y
-        Size.y = _lines.Length;
+        //_size Y
+        _size.y = _lines.Length;
 
-        //Size X
+        //_size X
         for (int k = 0; k < _lines.Length; k++)
         {
             var xLength = _lines[k].Split(" ");
 
-            if (xLength.Length > Size.x)
-                Size.x = xLength.Length;
+            if (xLength.Length > _size.x)
+                _size.x = xLength.Length;
         }
 
         //Grid Initialize Length
-        return new string[Size.x, Size.y];
+        return new string[_size.x, _size.y];
     }
 
     void FillGrid(string[,] grid)
     {
-        for (int i = 0; i < Size.y; i++)
+        for (int i = 0; i < _size.y; i++)
         {
             string[] lineDetail = _lines[i].Split(" ");
 
-            for (int j = 0; j < Size.x; j++)
+            for (int j = 0; j < _size.x; j++)
             {
-                foreach (var item in Keys)
+                foreach (var item in _keys)
                 {
                     if (lineDetail[j] == item.Characters)
                     {
@@ -92,19 +95,19 @@ public class SceneLoader : MonoBehaviour
                         if (item.IsPNJ)
                         {
                             DataGrid[j, i] += " PNJ";
-                            Instantiate(PnjPrefab, new Vector3(j, 0, Size.y - i - 1), Quaternion.identity);
+                            _characters.Add($"{j} {i}", Instantiate(PnjPrefab, new Vector3(j, 0, _size.y - i - 1), Quaternion.identity));
                         }
 
                         if (item.IsEnnemy)
                         {
                             DataGrid[j, i] += " Ennemy";
-                            Instantiate(VigilPrefab, new Vector3(j, 0, Size.y - i - 1), Quaternion.identity);
+                            _ennemies.Add($"{j} {i}", Instantiate(VigilPrefab, new Vector3(j, 0, _size.y - i - 1), Quaternion.identity));
                         }
 
                         if (item.IsPlayer)
                         {
                             DataGrid[j, i] += " Player";
-                            _playerPos = new Vector2Int(j, Size.y - i - 1);
+                            PlayerPos = new Vector2Int(j, _size.y - i - 1);
                         }
                     }
                 }
@@ -114,12 +117,12 @@ public class SceneLoader : MonoBehaviour
 
     void DisplayGridDebug(string[,] grid)
     {
-        for (int y = 0; y < Size.y; y++)
+        for (int y = 0; y < _size.y; y++)
         {
-            for (int x = 0; x < Size.x; x++)
+            for (int x = 0; x < _size.x; x++)
             {
                 PrefabJspQuoi pref = Instantiate(PrefabObjTest, new Vector3(x, 0, y), Quaternion.identity, transform).GetComponent<PrefabJspQuoi>();
-                var mapData = grid[x, Size.y - y - 1];
+                var mapData = grid[x, _size.y - y - 1];
 
                 //Debug.Log($"{x}:{y} = {mapData}");
 
@@ -155,7 +158,7 @@ public class SceneLoader : MonoBehaviour
                         //    pref.PrefabCenter.SetActive(true);
 
                         //if (line[k] == "Player")
-                        //    _playerPos = new Vector2Int(x, Size.y - y - 1);
+                        //    PlayerPos = new Vector2Int(x, _size.y - y - 1);
 
                         if (value >= 4)
                         {
@@ -175,8 +178,8 @@ public class SceneLoader : MonoBehaviour
 
     public bool GetPosDirection(Vector2Int moveDirection)
     {
-        string line = DataGrid[_playerPos.x, Size.y - _playerPos.y - 1];
-        //Debug.Log($"{line} / {moveDirection}\n{_playerPos}");
+        string line = DataGrid[PlayerPos.x, _size.y - PlayerPos.y - 1];
+        //Debug.Log($"{line} / {moveDirection}\n{PlayerPos}");
         string[] lines = line.Split(' ');
         bool value = true;
 
@@ -197,19 +200,39 @@ public class SceneLoader : MonoBehaviour
 
     public bool IsPnjThere(Vector2Int moveDirection)
     {
-        string line = DataGrid[_playerPos.x, Size.y - _playerPos.y - 1];
+        string line = DataGrid[PlayerPos.x, _size.y - PlayerPos.y - 1];
         string[] lines = line.Split(' ');
+        bool value = false;
 
         for (int i = 0; i < lines.Length; i++)
         {
             if (lines[i] == "PNJ")
-                _slap.SwitchUi();
+                value = true;
+            if (lines[i] == "Done")
+                value = false;
         }
 
-        if (GetPosDirection(moveDirection))
+        if (value)
+        {
+            _slap.SwitchUi();
+            DataGrid[PlayerPos.x, _size.y - PlayerPos.y - 1] += " Done";
+        }
+
+        if (GetPosDirection(moveDirection) && !value)
             return true;
         else
             return false;
+    }
+
+    public void KillPeople(Vector2Int pos)
+    {
+        string key = $"{pos.x} {_size.y - pos.y - 1}";
+
+        if (_characters[key] == null)
+            return;
+
+        Destroy(_characters[key]);
+        _characters.Remove(key);
     }
 }
 

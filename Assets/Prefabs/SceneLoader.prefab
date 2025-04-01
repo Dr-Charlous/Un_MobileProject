@@ -45,9 +45,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PrefabObjTest: {fileID: 6549562571277799895, guid: 3c0f8832e2be87248a606142a5d5146f, type: 3}
+  PnjPrefab: {fileID: 4166288462603289130, guid: f1dd9d321b6380b4abc11d43f7e7b1bf, type: 3}
+  VigilPrefab: {fileID: 4166288462603289130, guid: f1dd9d321b6380b4abc11d43f7e7b1bf, type: 3}
   Player: {fileID: 0}
-  LD: {fileID: 4900000, guid: f50b45e011c6a3348b01f2223515b49b, type: 3}
-  Keys:
+  PlayerPos: {x: 0, y: 0}
+  _slap: {fileID: 0}
+  _ld: {fileID: 4900000, guid: f50b45e011c6a3348b01f2223515b49b, type: 3}
+  _keys:
   - Characters: 00
     Category: 0
     IsUp: 1
@@ -372,4 +376,4 @@ MonoBehaviour:
     IsPNJ: 0
     IsEnnemy: 0
     IsPlayer: 1
-  _playerPos: {x: 0, y: 0}
+  _characters: []
