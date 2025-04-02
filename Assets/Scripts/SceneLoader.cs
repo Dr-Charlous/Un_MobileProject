@@ -15,10 +15,8 @@ public class SceneLoader : MonoBehaviour
     public GameObject PrefabObjTest;
     public GameObject PnjPrefab;
     public GameObject VigilPrefab;
-    public GameObject Player;
-    public Vector2Int PlayerPos;
+    public GameObject PlayerPrefab;
 
-    [SerializeField] Slap _slap;
     [SerializeField] TextAsset _ld;
     [SerializeField] Directory[] _keys;
     [SerializeField] Dictionary<string, GameObject> _characters = new();
@@ -32,9 +30,6 @@ public class SceneLoader : MonoBehaviour
         DataGrid = CreateGridFromText(_ld);
         FillGrid(DataGrid);
         DisplayGridDebug(DataGrid);
-
-        Player.transform.position = new Vector3(PlayerPos.x, Player.transform.position.y, PlayerPos.y);
-        Player.SetActive(true);
     }
 
     string[,] CreateGridFromText(TextAsset ld)
@@ -107,7 +102,9 @@ public class SceneLoader : MonoBehaviour
                         if (item.IsPlayer)
                         {
                             DataGrid[j, i] += " Player";
-                            PlayerPos = new Vector2Int(j, _size.y - i - 1);
+                            var player = Instantiate(PlayerPrefab, new Vector3(j, 0, _size.y - i - 1), Quaternion.identity);
+                            GameManager.Instance.DebugScript.Chara = player.GetComponentInChildren<CharaControl>();
+                            GameManager.Instance.CamFollow.Target = player.GetComponentInChildren<Inputs>().TargetCam;
                         }
                     }
                 }
@@ -158,7 +155,7 @@ public class SceneLoader : MonoBehaviour
                         //    pref.PrefabCenter.SetActive(true);
 
                         //if (line[k] == "Player")
-                        //    PlayerPos = new Vector2Int(x, _size.y - y - 1);
+                        //    _charaPos = new Vector2Int(x, _size.y - y - 1);
 
                         if (value >= 4)
                         {
@@ -176,10 +173,10 @@ public class SceneLoader : MonoBehaviour
         }
     }
 
-    public bool GetPosDirection(Vector2Int moveDirection)
+    public bool GetPosDirection(Vector2Int moveDirection, Vector2Int charaPos)
     {
-        string line = DataGrid[PlayerPos.x, _size.y - PlayerPos.y - 1];
-        //Debug.Log($"{line} / {moveDirection}\n{PlayerPos}");
+        string line = DataGrid[charaPos.x, _size.y - charaPos.y - 1];
+        //Debug.Log($"{line} / {moveDirection}\n{_charaPos}");
         string[] lines = line.Split(' ');
         bool value = true;
 
@@ -198,9 +195,9 @@ public class SceneLoader : MonoBehaviour
         return value;
     }
 
-    public bool IsPnjThere(Vector2Int moveDirection)
+    public bool IsPnjThere(Vector2Int moveDirection, Vector2Int charaPos, Slap slap)
     {
-        string line = DataGrid[PlayerPos.x, _size.y - PlayerPos.y - 1];
+        string line = DataGrid[charaPos.x, _size.y - charaPos.y - 1];
         string[] lines = line.Split(' ');
         bool value = false;
 
@@ -214,11 +211,11 @@ public class SceneLoader : MonoBehaviour
 
         if (value)
         {
-            _slap.SwitchUi();
-            DataGrid[PlayerPos.x, _size.y - PlayerPos.y - 1] += " Done";
+            slap.SwitchUi();
+            DataGrid[charaPos.x, _size.y - charaPos.y - 1] += " Done";
         }
 
-        if (GetPosDirection(moveDirection) && !value)
+        if (GetPosDirection(moveDirection, charaPos) && !value)
             return true;
         else
             return false;

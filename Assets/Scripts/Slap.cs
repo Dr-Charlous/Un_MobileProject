@@ -7,38 +7,35 @@ using static Unity.VisualScripting.Member;
 public class Slap : MonoBehaviour
 {
     [SerializeField] CharaControl _chara;
-    [SerializeField] SceneLoader _loader;
     [SerializeField] AudioSource _source;
-    [SerializeField] Animator _anim;
-    [SerializeField] GameObject _ui;
     [SerializeField] float _time;
 
     Coroutine _coroutine;
 
     private void Start()
     {
-        _ui.SetActive(false);
+        GameManager.Instance.SlapUi.SetActive(false);
     }
 
     public void SwitchUi()
     {
-        _ui.SetActive(_chara.CanMove);
+        GameManager.Instance.SlapUi.SetActive(_chara.CanMove);
         _chara.CanMove = !_chara.CanMove;
     }
 
-    public void SlapAction()
+    public void SlapAction(Vector2Int pos)
     {
         if (_coroutine == null)
-            _coroutine = StartCoroutine(Action(_time));
+            _coroutine = StartCoroutine(Action(_time, pos));
     }
 
-    IEnumerator Action(float time)
+    IEnumerator Action(float time, Vector2Int pos)
     {
-        _anim.SetTrigger("Slap");
+        GameManager.Instance.SlapAnim.SetTrigger("Slap");
         _source.Play();
         yield return new WaitForSeconds(time);
         SwitchUi();
-        _loader.KillPeople(_loader.PlayerPos);
+        GameManager.Instance.SceneLoader.KillPeople(pos);
         _coroutine = null;
     }
 }

@@ -9,8 +9,7 @@ public class CharaControl : MonoBehaviour
     public Vector3 TargetPos;
     public bool CanMove = true;
 
-    [SerializeField] DebugScript _debug;
-    [SerializeField] SceneLoader _sceneLoad;
+    [SerializeField] Inputs _inputs;
     [SerializeField] Slap _slap;
     [SerializeField] float _distanceInput = 1;
     [SerializeField] float _distanceMove = 1;
@@ -19,15 +18,27 @@ public class CharaControl : MonoBehaviour
     Touch _touch;
     Vector2? _initialePos;
     Vector2? _endPos;
+    Vector2Int _charaPos;
+    bool _isTouchBeginAlreadyUsed = false;
+    bool _isTouchEndAlreadyUsed = false;
 
     private void Start()
     {
+        _charaPos = new Vector2Int((int)transform.position.x, (int)transform.position.z);
         TargetInitialPos = Obj.position;
     }
 
     private void Update()
     {
-        HandleInput();
+        if (_inputs != null)
+        {
+            _inputs.HandleInputs();
+            HandleInputs();
+        }
+        else
+        {
+            //BotInputs();
+        }
 
         Obj.position = Vector3.Lerp(Obj.position, TargetInitialPos + TargetPos, _lerpSpeed);
     }
@@ -42,21 +53,36 @@ public class CharaControl : MonoBehaviour
 
             if (direction != Vector2.zero && direction.magnitude >= _distanceInput)
             {
-                Vector2Int intDirection = GetDirection(direction);
+                Vector2Int intDirection;
+                if (_inputs != null)
+                    intDirection = _inputs.GetDirection(direction);
+                else
+                {
+                    direction = direction.normalized;
+
+                    if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+                        direction = new Vector2(direction.x, 0).normalized;
+                    else
+                        direction = new Vector2(0, direction.y).normalized;
+
+                    intDirection = new Vector2Int((int)direction.x, (int)direction.y);
+                }
+
+                var sceneLoad = GameManager.Instance.SceneLoader;
 
                 //Move
-                if (_sceneLoad.GetPosDirection(intDirection) && CanMove)
+                if (sceneLoad.GetPosDirection(intDirection, _charaPos) && CanMove)
                 {
                     TargetInitialPos = Obj.position;
                     TargetPos = new Vector3(intDirection.x, Obj.position.y, intDirection.y) * _distanceMove;
 
-                    _sceneLoad.PlayerPos += intDirection;
+                    _charaPos += intDirection;
                 }
 
                 //Slap
-                if (_sceneLoad.IsPnjThere(intDirection) && !CanMove)
+                if (sceneLoad.IsPnjThere(intDirection, _charaPos, _slap) && !CanMove)
                 {
-                    _slap.SlapAction();
+                    _slap.SlapAction(_charaPos);
                 }
 
                 _initialePos = null;
@@ -65,69 +91,49 @@ public class CharaControl : MonoBehaviour
         }
     }
 
-    Vector2Int GetDirection(Vector2 direction)
-    {
-        direction = direction.normalized; ;
-
-        if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
-            direction = new Vector2(direction.x, 0).normalized;
-        else
-            direction = new Vector2(0, direction.y).normalized;
-
-        return new Vector2Int((int)direction.x, (int)direction.y);
-    }
-
-    void HandleInput()
+    void HandleInputs()
     {
 #if UNITY_EDITOR
-        if (Input.GetMouseButtonDown(0))
+        if (_inputs.IsTouch)
         {
             if (_initialePos == null)
             {
                 Obj.position = TargetInitialPos + TargetPos;
                 _initialePos = Input.mousePosition;
-                _debug.DebugText($"Mouse clic\n{_initialePos}", 0);
             }
-
-            _debug.DebugText("O", 2);
         }
 
-        if (Input.GetMouseButtonUp(0))
+        if (!_inputs.IsTouch)
         {
             _endPos = Input.mousePosition;
-            _debug.DebugText($"Mouse release\n{_initialePos}\n{_endPos}", 0);
-
             MoveTargetSet();
-
-            _debug.DebugText("X", 2);
         }
 #else
-        if (Input.touchCount == 0)
-            return;
-
-            _touch = Input.GetTouch(0);
-
-        if (_touch.phase == TouchPhase.Began)
+        if (_inputs.IsTouch)
         {
             if (_initialePos == null)
             {
                 Obj.position = TargetInitialPos + TargetPos;
-                _initialePos = _touch.position;
-                _debug.DebugText($"Touch clic\n{_initialePos}", 0);
+                _initialePos = _inputs.Touch.position;
             }
 
-            _debug.DebugText("O", 2);
+            _isTouchEndAlreadyUsed = false;
         }
 
-        if (_touch.phase == TouchPhase.Ended)
+        if (!_inputs.IsTouch && !_isTouchEndAlreadyUsed)
         {
-            _endPos = _touch.position;
-            _debug.DebugText($"Touch release\n{_initialePos}\n{_endPos}", 0);
-
+            _endPos = _inputs.Touch.position;
             MoveTargetSet();
-
-            _debug.DebugText("X", 2);
+            _isTouchEndAlreadyUsed = true;
         }
 #endif
+    }
+
+    void BotInputs()
+    {
+        _initialePos = Vector2.zero;
+        _endPos = new Vector2(Random.Range(-1, 2), Random.Range(-1, 2));
+
+        MoveTargetSet();
     }
 }

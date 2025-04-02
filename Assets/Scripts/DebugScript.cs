@@ -3,8 +3,9 @@ using UnityEngine;
 
 public class DebugScript : MonoBehaviour
 {
+    public CharaControl Chara;
+
     [SerializeField] TextMeshProUGUI[] _textUi;
-    [SerializeField] CharaControl _chara;
     
     float _deltaTime = 0;
     float _timer = 0;
@@ -31,7 +32,7 @@ public class DebugScript : MonoBehaviour
     {
         _timer += Time.deltaTime;
 
-        float distance = ((_chara.TargetInitialPos + _chara.TargetPos) - _chara.Obj.position).magnitude;
+        float distance = ((Chara.TargetInitialPos + Chara.TargetPos) - Chara.Obj.position).magnitude;
 
         DebugText($"Lerp : {Mathf.Round(distance * 100) / 100}\n{Mathf.Round(_timer * 10) / 10}", 1);
     }
