@@ -11,6 +11,7 @@ public class Inputs : MonoBehaviour
 
     Vector2? _initialePos;
     Vector2? _endPos;
+    bool _haveEnnemiesPlayed = true;
 
     public Vector2Int GetDirection(Vector2 direction)
     {
@@ -35,6 +36,8 @@ public class Inputs : MonoBehaviour
 
             debug.DebugText($"Mouse clic\n{Input.mousePosition}", 0);
             debug.DebugText("O", 2);
+
+            _haveEnnemiesPlayed = false;
         }
 
         if (Input.GetMouseButtonUp(0))
@@ -43,8 +46,14 @@ public class Inputs : MonoBehaviour
 
             debug.DebugText($"Mouse release\n{_initialePos}\n{_endPos}", 0);
             debug.DebugText("X", 2);
+
+            if (!_haveEnnemiesPlayed)
+            {
+                GameManager.Instance.SceneLoader.EnnemiesTrun();
+                _haveEnnemiesPlayed = true;
+            }
         }
-#else
+        #else
         if (Input.touchCount == 0)
             return;
 
@@ -56,6 +65,8 @@ public class Inputs : MonoBehaviour
 
             debug.DebugText($"Touch clic\n{Touch.position}", 0);
             debug.DebugText("O", 2);
+
+            _haveEnnemiesPlayed = false;
         }
 
         if (Touch.phase == TouchPhase.Ended)
@@ -64,6 +75,12 @@ public class Inputs : MonoBehaviour
 
             debug.DebugText($"Touch release\n{_initialePos}\n{_endPos}", 0);
             debug.DebugText("X", 2);
+
+            if (!_haveEnnemiesPlayed)
+            {
+                GameManager.Instance.SceneLoader.EnnemiesTrun();
+                _haveEnnemiesPlayed = true;
+            }
         }
 #endif
     }

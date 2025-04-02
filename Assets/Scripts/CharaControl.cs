@@ -80,7 +80,7 @@ public class CharaControl : MonoBehaviour
                 }
 
                 //Slap
-                if (sceneLoad.IsPnjThere(intDirection, _charaPos, _slap) && !CanMove)
+                if (sceneLoad.IsPnjThere(intDirection, _charaPos, _slap) && !CanMove && _inputs != null)
                 {
                     _slap.SlapAction(_charaPos);
                 }
@@ -129,7 +129,7 @@ public class CharaControl : MonoBehaviour
 #endif
     }
 
-    void BotInputs()
+    public void BotInputs()
     {
         _initialePos = Vector2.zero;
         _endPos = new Vector2(Random.Range(-1, 2), Random.Range(-1, 2));

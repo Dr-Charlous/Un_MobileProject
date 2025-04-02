@@ -231,6 +231,14 @@ public class SceneLoader : MonoBehaviour
         Destroy(_characters[key]);
         _characters.Remove(key);
     }
+
+    public void EnnemiesTrun()
+    {
+        foreach (var vigil in _ennemies)
+        {
+            vigil.Value.GetComponent<CharaControl>().BotInputs();
+        }
+    }
 }
 
 [Serializable]
