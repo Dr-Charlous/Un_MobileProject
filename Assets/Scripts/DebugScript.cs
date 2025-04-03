@@ -4,6 +4,7 @@ using UnityEngine;
 public class DebugScript : MonoBehaviour
 {
     public CharaControl Chara;
+    public bool IsDebugText = false;
     public bool IsDebug = false;
 
     [SerializeField] TextMeshProUGUI[] _textUi;
@@ -48,7 +49,7 @@ public class DebugScript : MonoBehaviour
     {
         for (int i = 0; i < _textUi.Length; i++)
         {
-            _textUi[i].gameObject.SetActive(false);
+            _textUi[i].gameObject.SetActive(IsDebugText);
         }
     }
 }

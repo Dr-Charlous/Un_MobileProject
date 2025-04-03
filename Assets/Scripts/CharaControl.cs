@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CharaControl : MonoBehaviour
@@ -5,22 +6,24 @@ public class CharaControl : MonoBehaviour
     public Transform MeshObj;
     public Vector3 TargetInitialPos;
     public Vector3 TargetPos;
+    public Vector2Int CharaPos;
     public bool CanMove = true;
 
     [SerializeField] Inputs _inputs;
     [SerializeField] Slap _slap;
+    [SerializeField] Animator _anim;
     [SerializeField] float _distanceInput = 1;
     [SerializeField] float _distanceMove = 1;
     [SerializeField][Range(0f, 1f)] float _lerpSpeed = 0.5f;
 
     Vector2? _initialePos;
     Vector2? _endPos;
-    Vector2Int _charaPos;
     bool _isTouchEndAlreadyUsed = false;
+    bool _isDead = false;
 
     private void Start()
     {
-        _charaPos = new Vector2Int((int)transform.position.x, (int)transform.position.z);
+        CharaPos = new Vector2Int((int)transform.position.x, (int)transform.position.z);
         TargetInitialPos = MeshObj.position;
     }
 
@@ -51,23 +54,30 @@ public class CharaControl : MonoBehaviour
                 intDirection = _inputs.GetDirection(direction);
 
                 //Move
-                if (sceneLoad.GetPosDirection(intDirection, _charaPos) && CanMove)
+                if (sceneLoad.GetPosDirection(intDirection, CharaPos) && CanMove && !_isDead)
                 {
+                    if (sceneLoad.IsEnnemyThere(CharaPos))
+                    {
+                        _anim.SetBool("IsDead", true);
+                        GameManager.Instance.Score.Lose();
+                        _isDead = true;
+                    }
+
                     TargetInitialPos = MeshObj.position;
                     TargetPos = new Vector3(intDirection.x, MeshObj.position.y, intDirection.y) * _distanceMove;
 
                     //Rotation mesh
                     MeshObj.LookAt(MeshObj.position + new Vector3(intDirection.x, 0, intDirection.y) * _distanceMove);
 
-                    _charaPos += intDirection;
+                    CharaPos += intDirection;
                 }
 
                 //Slap
                 if (_inputs != null)
                 {
-                    if (sceneLoad.IsPnjThere(_charaPos, _slap) && !CanMove)
+                    if (sceneLoad.IsPnjThere(CharaPos, _slap) && !CanMove)
                     {
-                        _slap.SlapAction(_charaPos);
+                        _slap.SlapAction(CharaPos);
                     }
                 }
 
@@ -133,7 +143,7 @@ public class CharaControl : MonoBehaviour
             intDirection = new Vector2Int((int)direction.x, (int)direction.y);
 
             //Move
-            if (GameManager.Instance.SceneLoader.GetPosDirection(intDirection, _charaPos) && CanMove)
+            if (GameManager.Instance.SceneLoader.GetPosDirection(intDirection, CharaPos) && CanMove)
             {
                 TargetInitialPos = MeshObj.position;
                 TargetPos = new Vector3(intDirection.x, MeshObj.position.y, intDirection.y) * _distanceMove;
@@ -141,7 +151,7 @@ public class CharaControl : MonoBehaviour
                 //Rotation mesh
                 MeshObj.LookAt(MeshObj.position + new Vector3(intDirection.x, 0, intDirection.y) * _distanceMove);
 
-                _charaPos += intDirection;
+                CharaPos += intDirection;
             }
             else
                 BotInputs();

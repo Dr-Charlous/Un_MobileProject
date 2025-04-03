@@ -133,6 +133,7 @@ MonoBehaviour:
   CanMove: 1
   _inputs: {fileID: 2321362507578745964}
   _slap: {fileID: 4347236557186422729}
+  _anim: {fileID: 941675300324476968}
   _distanceInput: 1
   _distanceMove: 1
   _lerpSpeed: 0.5

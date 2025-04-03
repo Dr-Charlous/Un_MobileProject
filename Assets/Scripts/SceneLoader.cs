@@ -162,7 +162,7 @@ public class SceneLoader : MonoBehaviour
                         //    pref.PrefabCenter.SetActive(true);
 
                         //if (line[k] == "Player")
-                        //    _charaPos = new Vector2Int(x, _size.y - y - 1);
+                        //    CharaPos = new Vector2Int(x, _size.y - y - 1);
 
                         if (value >= 4)
                         {
@@ -183,7 +183,7 @@ public class SceneLoader : MonoBehaviour
     public bool GetPosDirection(Vector2Int moveDirection, Vector2Int charaPos)
     {
         string line = DataGrid[charaPos.x, _size.y - charaPos.y - 1];
-        //Debug.Log($"{line} / {moveDirection}\n{_charaPos}");
+        //Debug.Log($"{line} / {moveDirection}\n{CharaPos}");
         string[] lines = line.Split(' ');
         bool value = true;
 
@@ -226,6 +226,26 @@ public class SceneLoader : MonoBehaviour
             return true;
         else
             return false;
+    }
+
+    public bool IsEnnemyThere(Vector2Int charaPos)
+    {
+        bool value = false;
+
+        foreach (var item in _ennemies)
+        {
+            var chara = item.Value.GetComponentInChildren<CharaControl>();
+            var charaPlayer = GameManager.Instance.DebugScript.Chara;
+
+            if (chara.CharaPos.x <= charaPlayer.CharaPos.x + 1
+                && chara.CharaPos.x >= charaPlayer.CharaPos.x - 1
+                && chara.CharaPos.y <= charaPlayer.CharaPos.y + 1
+                && chara.CharaPos.y >= charaPlayer.CharaPos.y - 1
+                )
+                value = true;
+        }
+
+        return value;
     }
 
     public void KillPeople(Vector2Int pos)

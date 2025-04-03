@@ -5,12 +5,14 @@ public class Scoring : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI _textScore;
     [SerializeField] GameObject _victoryUi;
+    [SerializeField] GameObject _loseUi;
     [SerializeField] Vector3 _camVictorySpeed;
     [SerializeField] int _score = 0;
 
     private void Start()
     {
         _victoryUi.SetActive(false);
+        _loseUi.SetActive(false);
     }
 
     public void UpdateScore(int value)
@@ -31,5 +33,10 @@ public class Scoring : MonoBehaviour
         _victoryUi.SetActive(true);
         GameManager.Instance.CamFollow.Target = player.transform;
         GameManager.Instance.CamFollow.Speed = _camVictorySpeed;
+    }
+
+    public void Lose()
+    {
+        _loseUi.SetActive(true);
     }
 }
