@@ -15,6 +15,15 @@ public class RandomCharacter : MonoBehaviour
         RandomElement(_torsos);
         RandomElement(_head);
         RandomElement(_hair);
+
+        //Not time for shader displace texture :'(
+        //int expression = Random.Range(1, 8);
+        //int color = Random.Range(1, 6);
+
+        //int foot = Random.Range(1, 8);
+        //int leg = Random.Range(1, 8);
+        //int torso = Random.Range(1, 8);
+        //int head = Random.Range(1, 8);
     }
 
     void RandomElement(GameObject[] objs)

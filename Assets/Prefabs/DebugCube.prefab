@@ -265,7 +265,7 @@ MonoBehaviour:
   PrefabRight: {fileID: 8394845104306799676}
   PrefabLeft: {fileID: 6718437641416708517}
   PrefabCenter: {fileID: 7393110905601951673}
-  PrefabBloc: {fileID: 5163829244583790524}
+  PrefabCube: {fileID: 5163829244583790524}
 --- !u!1 &6718437641416708517
 GameObject:
   m_ObjectHideFlags: 0

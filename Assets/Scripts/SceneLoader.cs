@@ -125,7 +125,7 @@ public class SceneLoader : MonoBehaviour
         {
             for (int x = 0; x < _size.x; x++)
             {
-                PrefabJspQuoi pref = Instantiate(PrefabObjTest, new Vector3(x, 0, y), Quaternion.identity, transform).GetComponent<PrefabJspQuoi>();
+                PrefabBloc pref = Instantiate(PrefabObjTest, new Vector3(x, 0, y), Quaternion.identity, transform).GetComponent<PrefabBloc>();
                 var mapData = grid[x, _size.y - y - 1];
 
                 //Debug.Log($"{x}:{y} = {mapData}");
@@ -166,7 +166,7 @@ public class SceneLoader : MonoBehaviour
 
                         if (value >= 4)
                         {
-                            pref.PrefabBloc.SetActive(true);
+                            pref.PrefabCube.SetActive(true);
 
                             pref.PrefabFront.SetActive(false);
                             pref.PrefabBack.SetActive(false);
