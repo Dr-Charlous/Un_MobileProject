@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 public class SceneLoader : MonoBehaviour
 {
@@ -90,7 +89,11 @@ public class SceneLoader : MonoBehaviour
                         if (item.IsPNJ)
                         {
                             DataGrid[j, i] += " PNJ";
-                            _characters.Add($"{j} {i}", Instantiate(PnjPrefab, new Vector3(j, 0, _size.y - i - 1), Quaternion.identity));
+                            var pnj = Instantiate(PnjPrefab, new Vector3(j, 0, _size.y - i - 1), Quaternion.identity);
+                            _characters.Add($"{j} {i}", pnj);
+
+                            //Random rotation
+                            pnj.transform.rotation = Quaternion.Euler(Vector3.up * UnityEngine.Random.Range(0, 4) * 90);
                         }
 
                         if (item.IsEnnemy)
@@ -195,7 +198,7 @@ public class SceneLoader : MonoBehaviour
         return value;
     }
 
-    public bool IsPnjThere(Vector2Int moveDirection, Vector2Int charaPos, Slap slap)
+    public bool IsPnjThere(Vector2Int charaPos, Slap slap)
     {
         string line = DataGrid[charaPos.x, _size.y - charaPos.y - 1];
         string[] lines = line.Split(' ');
@@ -215,7 +218,7 @@ public class SceneLoader : MonoBehaviour
             DataGrid[charaPos.x, _size.y - charaPos.y - 1] += " Done";
         }
 
-        if (GetPosDirection(moveDirection, charaPos) && !value)
+        if (!value)
             return true;
         else
             return false;
@@ -228,8 +231,9 @@ public class SceneLoader : MonoBehaviour
         if (_characters[key] == null)
             return;
 
-        Destroy(_characters[key]);
-        _characters.Remove(key);
+        _characters[key].GetComponentInChildren<Animator>().SetBool("IsDead", true);
+        //Destroy(_characters[key]);
+        //_characters.Remove(key);
     }
 
     public void EnnemiesTrun()

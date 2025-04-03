@@ -1,17 +1,22 @@
 using TMPro;
+using Unity.VisualScripting;
+using UnityEditor.UI;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class DebugScript : MonoBehaviour
 {
     public CharaControl Chara;
 
     [SerializeField] TextMeshProUGUI[] _textUi;
-    
+    [SerializeField] bool _isDebug = false;
+
     float _deltaTime = 0;
     float _timer = 0;
 
     private void Start()
     {
+        ActualizeDebug();
         DebugText($"Nothing", 0);
         DebugText("X", 2);
     }
@@ -32,7 +37,7 @@ public class DebugScript : MonoBehaviour
     {
         _timer += Time.deltaTime;
 
-        float distance = ((Chara.TargetInitialPos + Chara.TargetPos) - Chara.Obj.position).magnitude;
+        float distance = ((Chara.TargetInitialPos + Chara.TargetPos) - Chara.MeshObj.position).magnitude;
 
         DebugText($"Lerp : {Mathf.Round(distance * 100) / 100}\n{Mathf.Round(_timer * 10) / 10}", 1);
     }
@@ -40,5 +45,13 @@ public class DebugScript : MonoBehaviour
     public void DebugText(string txt, int value)
     {
         _textUi[value].text = txt;
+    }
+
+    public void ActualizeDebug()
+    {
+        for (int i = 0; i < _textUi.Length; i++)
+        {
+            _textUi[i].gameObject.SetActive(false);
+        }
     }
 }

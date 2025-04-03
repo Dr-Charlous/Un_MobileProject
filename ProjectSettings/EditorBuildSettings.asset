@@ -12,6 +12,6 @@ EditorBuildSettings:
     path: Assets/PolygonOffice/Scene/Demo.unity
     guid: 5363c4650c006d0469bf3eacd9da8533
   - enabled: 0
-    path: Assets/Scenes/Test_Art_Bougnouls.unity
+    path: Assets/Scenes/Test_Art.unity
     guid: 26b01fda2fca199458e8b38fd80524f7
   m_configObjects: {}

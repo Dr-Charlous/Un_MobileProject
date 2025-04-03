@@ -1,12 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using static Unity.VisualScripting.Member;
 
 public class Slap : MonoBehaviour
 {
     [SerializeField] CharaControl _chara;
+    [SerializeField] Animator _anim;
     [SerializeField] AudioSource _source;
     [SerializeField] float _time;
 
@@ -26,12 +24,13 @@ public class Slap : MonoBehaviour
     public void SlapAction(Vector2Int pos)
     {
         if (_coroutine == null)
-            _coroutine = StartCoroutine(Action(_time, pos));
+            _coroutine = StartCoroutine(Action(_time, pos)); ;
     }
 
     IEnumerator Action(float time, Vector2Int pos)
     {
         GameManager.Instance.SlapAnim.SetTrigger("Slap");
+        _anim.SetTrigger("Slap");
         _source.Play();
         yield return new WaitForSeconds(time);
         SwitchUi();

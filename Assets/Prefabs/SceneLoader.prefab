@@ -45,10 +45,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PrefabObjTest: {fileID: 6549562571277799895, guid: 3c0f8832e2be87248a606142a5d5146f, type: 3}
-  PnjPrefab: {fileID: 8083422912616810045, guid: 468269dcd47d95447be215a265b7b5bf, type: 3}
-  VigilPrefab: {fileID: 988504451555817036, guid: 9ecc858ef9c5aad428b4baf7f57f4a0d, type: 3}
+  PnjPrefab: {fileID: 2961903772431070357, guid: 34d42a727eb4fc94fb188f96cb20ea77, type: 3}
+  VigilPrefab: {fileID: 2961903772431070357, guid: 389b1c0c97749ed499dbf0ab2029fddf, type: 3}
   PlayerPrefab: {fileID: 4854285785982132265, guid: dbe6a212b85e2f44ea611b59d7d6dbae, type: 3}
-  _slap: {fileID: 0}
   _ld: {fileID: 4900000, guid: f50b45e011c6a3348b01f2223515b49b, type: 3}
   _keys:
   - Characters: 00
