@@ -10,15 +10,15 @@ public class SceneLoader : MonoBehaviour
         Character
     }
 
-    public string[,] DataGrid { get; private set; }
+    public Dictionary<string, GameObject> Characters = new();
     public GameObject PrefabObjTest;
     public GameObject PnjPrefab;
     public GameObject VigilPrefab;
     public GameObject PlayerPrefab;
+    public string[,] DataGrid { get; private set; }
 
     [SerializeField] TextAsset _ld;
     [SerializeField] Directory[] _keys;
-    [SerializeField] Dictionary<string, GameObject> _characters = new();
     [SerializeField] Dictionary<string, GameObject> _ennemies = new();
 
     Vector2Int _size = Vector2Int.zero;
@@ -28,7 +28,11 @@ public class SceneLoader : MonoBehaviour
     {
         DataGrid = CreateGridFromText(_ld);
         FillGrid(DataGrid);
-        DisplayGridDebug(DataGrid);
+
+        if (GameManager.Instance.DebugScript.IsDebug)
+            DisplayGridDebug(DataGrid);
+
+        GameManager.Instance.Score.UpdateScore(0);
     }
 
     string[,] CreateGridFromText(TextAsset ld)
@@ -90,7 +94,7 @@ public class SceneLoader : MonoBehaviour
                         {
                             DataGrid[j, i] += " PNJ";
                             var pnj = Instantiate(PnjPrefab, new Vector3(j, 0, _size.y - i - 1), Quaternion.identity);
-                            _characters.Add($"{j} {i}", pnj);
+                            Characters.Add($"{j} {i}", pnj);
 
                             //Random rotation
                             pnj.transform.rotation = Quaternion.Euler(Vector3.up * UnityEngine.Random.Range(0, 4) * 90);
@@ -228,12 +232,12 @@ public class SceneLoader : MonoBehaviour
     {
         string key = $"{pos.x} {_size.y - pos.y - 1}";
 
-        if (_characters[key] == null)
+        if (Characters[key] == null)
             return;
 
-        _characters[key].GetComponentInChildren<Animator>().SetBool("IsDead", true);
-        //Destroy(_characters[key]);
-        //_characters.Remove(key);
+        Characters[key].GetComponentInChildren<Animator>().SetBool("IsDead", true);
+        //Destroy(Characters[key]);
+        //Characters.Remove(key);
     }
 
     public void EnnemiesTrun()

@@ -16,4 +16,5 @@ public class GameManager : MonoBehaviour
     public GameObject SlapUi;
     public Animator SlapAnim;
     public CamFollow CamFollow;
+    public Scoring Score;
 }

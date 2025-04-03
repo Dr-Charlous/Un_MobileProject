@@ -1,15 +1,12 @@
 using TMPro;
-using Unity.VisualScripting;
-using UnityEditor.UI;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class DebugScript : MonoBehaviour
 {
     public CharaControl Chara;
+    public bool IsDebug = false;
 
     [SerializeField] TextMeshProUGUI[] _textUi;
-    [SerializeField] bool _isDebug = false;
 
     float _deltaTime = 0;
     float _timer = 0;
